@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<head>
+<title>Calculate Electricity Bill using PHP</title>
+</head>
+<?php
+$result_str = $result = '';
+if (isset($_POST['unit-submit'])) {
+    $units = $_POST['units'];
+    if (!empty($units)) {
+        $result = calculate_bill($units);
+        $result_str = 'Total amount of ' . $units . ' - ' . $result;
+    }
+}
+function calculate_bill($units) {
+    $first = 9;
+    $second = 12;
+    $third = 15;
+ 
+    if($units <= 50) {
+        $bill = $units * $first;
+    }
+    else if($units > 50 && $units <= 100) {
+        $temp = 50 * $first;
+        $remaining_units = $units - 50;
+        $bill = $temp + ($remaining_units * $second);
+    }
+    else {
+        $temp = (50 * $first) + (100 * $second) ;
+        $remaining_units = $units - 250;
+        $bill = $temp + ($remaining_units * $third);
+    }
+    return number_format((float)$bill, 2, '.', '');
+}
+?>
+<body>
+	<div>
+		<h1>Calculate Electricity Bill</h1>
+		
+		<form action="" method="post" id="form1">            
+            	<input type="number" name="units " id="units" placeholder="Please enter no. of Units" />            
+            	<input type="submit" name="unit-submit" id="unit-submit" value="Submit" />		
+		</form>
+ 
+		<div>
+		    <?php echo '<br />' . $result_str; ?>
+		</div>	
+	</div>
+</body>
+</html>
